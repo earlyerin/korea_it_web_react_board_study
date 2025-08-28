@@ -17,7 +17,7 @@ export const box = css`
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
-  gap: 20px;
+  gap: 10px;
 `;
 
 export const inputBox = css`
@@ -29,12 +29,9 @@ export const inputBox = css`
   gap: 10px;
 `;
 
-export const authBtnBox = css`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+export const btnBox = css`
   width: 100%;
-  gap: 10px;
+  margin-top: 10px;
 
   > button {
     width: 100%;
@@ -45,6 +42,7 @@ export const authBtnBox = css`
     cursor: pointer;
     font-weight: 500;
     color: white;
+    background-color: #33a1e0;
     transition: all 0.1s ease;
 
     &:hover {
@@ -53,36 +51,9 @@ export const authBtnBox = css`
   }
 `;
 
-export const oauthBtnBox = css`
+export const errorMessage = css`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  gap: 10px;
-
-  > a {
-    position: relative;
-    text-align: center;
-    width: 100%;
-    padding: 10px 30px;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    text-decoration: none;
-    transition: all 0.1s ease;
-    box-sizing: border-box;
-
-    &:hover {
-      box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
-    }
-  }
-`;
-
-export const oauthIcon = css`
-  position: absolute;
-  left: 20px;
-  top: 10px;
+  gap: 5px;
+  color: #8e1616;
+  font-size: 14px;
 `;

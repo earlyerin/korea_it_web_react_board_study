@@ -1,17 +1,18 @@
 /** @jsxImportSource @emotion/react */
+import { useNavigate, useSearchParams } from "react-router-dom";
+import * as s from "./styles";
 import { useEffect, useState } from "react";
 import AuthInput from "../../components/AuthInput/AuthInput";
-import * as s from "./styles";
 import { IoIosWarning } from "react-icons/io";
-import { signupRequest } from "../../apis/auth/authApis";
-import { useNavigate } from "react-router-dom";
+import { oauth2SignupRequest } from "../../apis/auth/authApis";
 
-function Signup() {
+function Oauth2Signup() {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState({});
+  const [searchParam] = useSearchParams();
   const navigate = useNavigate();
 
   const signupOnClickHandler = () => {
@@ -31,10 +32,12 @@ function Signup() {
     }
 
     //회원가입 API 요청
-    signupRequest({
+    oauth2SignupRequest({
       userName: username,
       password: password,
-      userEmail: email,
+      userEmail: searchParam.get("email"),
+      provider: searchParam.get("provider"),
+      providerUserId: searchParam.get("providerUserId"),
     })
       .then((response) => {
         if (response.data.status === "success") {
@@ -42,9 +45,9 @@ function Signup() {
           navigate("/auth/signin"); //회원가입 성공 후 로그인 페이지로 이동
         } else if (response.data.status === "failed") {
           alert(response.data.message);
-          if (response.data.message === "이미 사용중인 아이디입니다.") {
+          if (response.data.message === "이미 존재하는 아이디입니다.") {
             setUserName("");
-          } else if (response.data.message === "이미 가입된 이메일입니다.") {
+          } else if (response.data.message === "이미 존재하는 이메일입니다.") {
             setEmail("");
           }
           return;
@@ -69,17 +72,12 @@ function Signup() {
       }
     }
 
-    if (email.length > 0) {
-      const emailRex =
-        /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-      if (!emailRex.test(email)) {
-        newErrorMessage.email = "이메일 형식에 맞게 입력해주세요";
-      }
-    }
-
     setErrorMessage(newErrorMessage);
-  }, [password, email]);
+  }, [password]);
 
+  useEffect(() => {
+    setEmail(searchParam.get("email"));
+  }, [searchParam]);
   return (
     <div css={s.container}>
       <h1>회원가입</h1>
@@ -115,17 +113,8 @@ function Signup() {
           placeholder={"이메일"}
           state={email}
           setState={setEmail}
+          disabled={true}
         />
-
-        {errorMessage.email ? (
-          <div css={s.errorMessage}>
-            <IoIosWarning />
-            <span>{errorMessage.email}</span>
-          </div>
-        ) : (
-          <></>
-        )}
-
         <div css={s.btnBox}>
           <button onClick={signupOnClickHandler}>가입하기</button>
         </div>
@@ -134,4 +123,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default Oauth2Signup;

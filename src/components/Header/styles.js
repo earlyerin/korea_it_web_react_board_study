@@ -13,8 +13,12 @@ export const header = css`
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0px 20px;
-
+    > span {
+      width: 60px;
+      margin: 0px 50px 10px 10px;
+      font-size: 35px;
+      text-align: center;
+    }
     > ul {
       display: flex;
       justify-content: center;
@@ -32,6 +36,15 @@ export const header = css`
       }
     }
   }
+
+  & > div:last-of-type {
+    width: 100px;
+    padding-right: 20px;
+  }
+`;
+
+export const siteLogo = css`
+  cursor: pointer;
 `;
 
 export const headerIcon = css`

@@ -1,20 +1,37 @@
 /** @jsxImportSource @emotion/react */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as s from "./styles";
-import { addBoardRequest } from "../../apis/board/boardApis";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { getBoardDetail, updateBoard } from "../../apis/board/boardApis";
 
-function Write() {
+function UpdateBoard() {
+  const { boardId } = useParams();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  const principalData = queryClient.getQueryData(["getPrincipal"]);
 
-  const addBoardMutation = useMutation({
-    mutationKey: "addBoard",
-    mutationFn: addBoardRequest,
+  useEffect(() => {
+    getBoardDetail(boardId)
+      .then((response) => {
+        if (response.data.status === "success") {
+          setTitle(response.data.data.title);
+          setContent(response.data.data.content);
+        } else if (response.data.status === "failed") {
+          alert(response.data.message);
+          navigate("/board");
+        }
+      })
+      .catch((error) => {
+        alert("문제가 발생했습니다. 다시 시도해주세요.");
+        console.log(error);
+        return;
+      });
+  }, [boardId, navigate]);
+
+  const updateBoardMutation = useMutation({
+    mutationKey: "updateBoard",
+    mutationFn: updateBoard,
     onSuccess: (response) => {
       if (response.data.status === "success") {
         alert(response.data.message);
@@ -37,23 +54,17 @@ function Write() {
     },
   });
 
-  const addOnClickHandler = (e) => {
+  const updateOnClickHandler = (e) => {
     e.preventDefault();
     if (title.trim().length === 0 && content.trim().length === 0) {
       alert("모든 항목을 입력해주세요");
       return;
     }
 
-    if (principalData === undefined) {
-      alert("로그인이 필요합니다.");
-      navigate("/auth/signin");
-      return;
-    }
-
-    addBoardMutation.mutate({
+    updateBoardMutation.mutate({
+      boardId: boardId,
       title: title,
       content: content,
-      userId: principalData.data.data.userId,
     });
   };
 
@@ -71,11 +82,11 @@ function Write() {
           onChange={(e) => setContent(e.target.value)}
         ></textarea>
         <div css={s.btnBox}>
-          <button onClick={addOnClickHandler}>작성 완료</button>
+          <button onClick={updateOnClickHandler}>작성 완료</button>
         </div>
       </form>
     </div>
   );
 }
 
-export default Write;
+export default UpdateBoard;

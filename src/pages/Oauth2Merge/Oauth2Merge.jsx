@@ -1,51 +1,45 @@
 /** @jsxImportSource @emotion/react */
 import { useEffect, useState } from "react";
-import AuthInput from "../../components/AuthInput/AuthInput";
 import * as s from "./styles";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { IoIosWarning } from "react-icons/io";
-import { signupRequest } from "../../apis/auth/authApis";
-import { useNavigate } from "react-router-dom";
+import AuthInput from "../../components/AuthInput/AuthInput";
+import { oauth2MergeRequest } from "../../apis/auth/authApis";
 
-function Signup() {
+function Oauth2Merge() {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState({});
+  const [searchParam] = useSearchParams();
   const navigate = useNavigate();
 
-  const signupOnClickHandler = () => {
-    if (
-      username.trim().length === 0 &&
-      password.trim().length === 0 &&
-      confirmPassword.trim().length === 0 &&
-      email.trim().length === 0
-    ) {
+  const mergeOnClickHandler = () => {
+    if (username.trim().length === 0 && password.trim().length === 0) {
       alert("모든 항목을 입력해주세요");
       return;
     }
 
-    if (confirmPassword !== password) {
-      alert("비밀번호가 일치하지 않습니다.");
-      return;
-    }
-
     //회원가입 API 요청
-    signupRequest({
+    oauth2MergeRequest({
       userName: username,
       password: password,
-      userEmail: email,
+      provider: searchParam.get("provider"),
+      providerUserId: searchParam.get("providerUserId"),
     })
       .then((response) => {
         if (response.data.status === "success") {
           alert(response.data.message);
-          navigate("/auth/signin"); //회원가입 성공 후 로그인 페이지로 이동
+          navigate("/auth/signin"); //연동 후 로그인 페이지로 이동
         } else if (response.data.status === "failed") {
           alert(response.data.message);
-          if (response.data.message === "이미 사용중인 아이디입니다.") {
+          if (response.data.message === "사용자 정보를 확인하세요.") {
             setUserName("");
-          } else if (response.data.message === "이미 가입된 이메일입니다.") {
-            setEmail("");
+            setPassword("");
+          } else if (
+            response.data.message ===
+            "해당 계정은 이미 소셜 계정과 연동되어있습니다."
+          ) {
+            navigate("/auth/signin");
           }
           return;
         }
@@ -69,20 +63,12 @@ function Signup() {
       }
     }
 
-    if (email.length > 0) {
-      const emailRex =
-        /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-      if (!emailRex.test(email)) {
-        newErrorMessage.email = "이메일 형식에 맞게 입력해주세요";
-      }
-    }
-
     setErrorMessage(newErrorMessage);
-  }, [password, email]);
+  }, [password]);
 
   return (
     <div css={s.container}>
-      <h1>회원가입</h1>
+      <h1>계정 연동</h1>
       <div css={s.box}>
         <AuthInput
           type="text"
@@ -104,34 +90,12 @@ function Signup() {
         ) : (
           <></>
         )}
-        <AuthInput
-          type={"password"}
-          placeholder={"비밀번호 확인"}
-          state={confirmPassword}
-          setState={setConfirmPassword}
-        />
-        <AuthInput
-          type={"email"}
-          placeholder={"이메일"}
-          state={email}
-          setState={setEmail}
-        />
-
-        {errorMessage.email ? (
-          <div css={s.errorMessage}>
-            <IoIosWarning />
-            <span>{errorMessage.email}</span>
-          </div>
-        ) : (
-          <></>
-        )}
-
         <div css={s.btnBox}>
-          <button onClick={signupOnClickHandler}>가입하기</button>
+          <button onClick={mergeOnClickHandler}>연동하기</button>
         </div>
       </div>
     </div>
   );
 }
 
-export default Signup;
+export default Oauth2Merge;
