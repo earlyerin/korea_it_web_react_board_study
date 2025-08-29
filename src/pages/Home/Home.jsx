@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
-import { getPostRequest } from "../../apis/json/jsonApi";
 import * as s from "./styles";
+import { LuSearch } from "react-icons/lu";
 
 function Home() {
-  return <div>Home</div>;
+  return <div css={s.container}>HOME</div>;
 }
 
 export default Home;

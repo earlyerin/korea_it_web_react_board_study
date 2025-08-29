@@ -43,7 +43,14 @@ function Header() {
       <div>
         {principalData ? (
           <ul>
-            <li css={s.headerIcon}>
+            <li
+              css={s.headerIcon}
+              onClick={() =>
+                onClickNavHandler(
+                  `/account/profile/${principalData.data.data.userId}`
+                )
+              }
+            >
               <LuUserRoundCog />
             </li>
             <li css={s.headerIcon} onClick={onClickSignout}>
@@ -54,13 +61,13 @@ function Header() {
           <ul>
             <li
               css={s.headerIcon}
-              onClick={() => onClickNavHandler("auth/signin")}
+              onClick={() => onClickNavHandler("/auth/signin")}
             >
               <LuLogIn />
             </li>
             <li
               css={s.headerIcon}
-              onClick={() => onClickNavHandler("auth/signup")}
+              onClick={() => onClickNavHandler("/auth/signup")}
             >
               <LuUserRoundPlus />
             </li>

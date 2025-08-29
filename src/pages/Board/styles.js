@@ -96,3 +96,17 @@ export const paginateContainer = css`
     }
   }
 `;
+
+export const errorMessageBox = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px 0px;
+  gap: 5px;
+  color: #333;
+  font-size: 14px;
+
+  > div > span {
+    margin-left: 5px;
+  }
+`;

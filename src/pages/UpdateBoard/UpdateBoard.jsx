@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import * as s from "./styles";
 import { useNavigate, useParams } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { getBoardDetail, updateBoard } from "../../apis/board/boardApis";
 
 function UpdateBoard() {
@@ -10,6 +10,8 @@ function UpdateBoard() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const principalData = queryClient.getQueryData(["getPrincipal"]);
 
   useEffect(() => {
     getBoardDetail(boardId)
@@ -17,6 +19,10 @@ function UpdateBoard() {
         if (response.data.status === "success") {
           setTitle(response.data.data.title);
           setContent(response.data.data.content);
+          if (principalData.data.data.userId !== response.data.data.userId) {
+            alert("접근 권한이 없습니다.");
+            navigate("/board");
+          }
         } else if (response.data.status === "failed") {
           alert(response.data.message);
           navigate("/board");
@@ -27,7 +33,7 @@ function UpdateBoard() {
         console.log(error);
         return;
       });
-  }, [boardId, navigate]);
+  }, [boardId, navigate, principalData]);
 
   const updateBoardMutation = useMutation({
     mutationKey: "updateBoard",

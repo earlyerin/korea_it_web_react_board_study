@@ -42,7 +42,7 @@ export const btnBox = css`
   }
 `;
 
-export const errorMessage = css`
+export const errorMessageBox = css`
   display: flex;
   gap: 5px;
   color: #8e1616;

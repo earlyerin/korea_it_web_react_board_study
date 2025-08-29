@@ -6,6 +6,7 @@ import AuthRouter from "../AuthRouter/AuthRouter";
 import ProtectedRoute from "../../components/ProtectedRoute/ProtectedRoute";
 import BoardDetail from "../../pages/BoardDetail/BoardDetail";
 import UpdateBoard from "../../pages/UpdateBoard/UpdateBoard";
+import AccountRouter from "../AccountRouter/AccountRouter";
 
 function MainRouter() {
   return (
@@ -45,6 +46,14 @@ function MainRouter() {
           }
         />
         <Route path="/auth/*" element={<AuthRouter />} />
+        <Route
+          path="/account/*"
+          element={
+            <ProtectedRoute>
+              <AccountRouter />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </>
   );
