@@ -6,14 +6,13 @@ import {
   removeBoardByBoardId,
 } from "../../apis/board/boardApis";
 import { useNavigate, useParams } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
+import { usePrincipalState } from "../../store/usePrincipalStore";
 
 function BoardDetail() {
   const { boardId } = useParams();
   const [boardData, setBoardData] = useState({});
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  const principalData = queryClient.getQueryData(["getPrincipal"]);
+  const { principal } = usePrincipalState();
 
   useEffect(() => {
     getBoardDetail(boardId)
@@ -89,7 +88,7 @@ function BoardDetail() {
         <button css={s.btn("#33a1e0")} onClick={() => navigate(-1)}>
           목록
         </button>
-        {principalData.data.data.userId == boardData.userId ? (
+        {principal?.userId == boardData.userId ? (
           <div>
             <button
               css={s.btn("#FFDE63")}

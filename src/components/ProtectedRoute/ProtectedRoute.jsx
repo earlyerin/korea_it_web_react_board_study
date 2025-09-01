@@ -1,5 +1,4 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
 
 function ProtectedRoute({ children }) {
   const queryClient = useQueryClient();

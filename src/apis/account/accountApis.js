@@ -8,3 +8,22 @@ export const getUserInfo = async (userId) => {
     return error.response;
   }
 };
+
+export const changePasswordRequest = async (data) => {
+  try {
+    const response = await instance.post("/account/change/password/authentication/user", data);
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+}
+
+export const changeUserNameRequest = async (data) => {
+  try {
+    const response = await instance.post("/account/change/username/authentication/user", data);
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+}
+

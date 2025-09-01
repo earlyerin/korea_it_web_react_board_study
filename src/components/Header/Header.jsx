@@ -7,21 +7,14 @@ import {
   LuUserRoundCog,
   LuUserRoundPlus,
 } from "react-icons/lu";
-import { useQueryClient } from "@tanstack/react-query";
+import { usePrincipalState } from "../../store/usePrincipalStore";
 
 function Header() {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  const principalData = queryClient.getQueryData(["getPrincipal"]);
+  const { isLoggedIn, principal, logout } = usePrincipalState();
 
   const onClickNavHandler = (path) => {
     navigate(path);
-  };
-
-  const onClickSignout = () => {
-    localStorage.removeItem("accessToken");
-    queryClient.removeQueries(["principal"]); // 캐시 비우기
-    window.location.href = "/auth/signin";
   };
 
   return (
@@ -41,19 +34,17 @@ function Header() {
         </ul>
       </div>
       <div>
-        {principalData ? (
+        {isLoggedIn ? (
           <ul>
             <li
               css={s.headerIcon}
               onClick={() =>
-                onClickNavHandler(
-                  `/account/profile/${principalData.data.data.userId}`
-                )
+                onClickNavHandler(`/account/profile/${principal?.userId}`)
               }
             >
               <LuUserRoundCog />
             </li>
-            <li css={s.headerIcon} onClick={onClickSignout}>
+            <li css={s.headerIcon} onClick={() => logout()}>
               <LuLogOut />
             </li>
           </ul>

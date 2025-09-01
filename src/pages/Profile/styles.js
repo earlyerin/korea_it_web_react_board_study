@@ -14,6 +14,7 @@ export const box = css`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 30px;
   width: 100%;
   height: auto;
   padding: 30px 60px;
@@ -47,7 +48,7 @@ export const profileBox = css`
   }
 `;
 
-export const updateBox = css`
+export const contentBox = css`
   display: flex;
   flex-direction: column;
   width: 100%;

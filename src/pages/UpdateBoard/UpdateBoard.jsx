@@ -2,16 +2,16 @@
 import { useEffect, useState } from "react";
 import * as s from "./styles";
 import { useNavigate, useParams } from "react-router-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { getBoardDetail, updateBoard } from "../../apis/board/boardApis";
+import { usePrincipalState } from "../../store/usePrincipalStore";
 
 function UpdateBoard() {
   const { boardId } = useParams();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  const principalData = queryClient.getQueryData(["getPrincipal"]);
+  const { principal } = usePrincipalState();
 
   useEffect(() => {
     getBoardDetail(boardId)
@@ -19,7 +19,7 @@ function UpdateBoard() {
         if (response.data.status === "success") {
           setTitle(response.data.data.title);
           setContent(response.data.data.content);
-          if (principalData.data.data.userId !== response.data.data.userId) {
+          if (principal.userId !== response.data.data.userId) {
             alert("접근 권한이 없습니다.");
             navigate("/board");
           }
@@ -33,7 +33,7 @@ function UpdateBoard() {
         console.log(error);
         return;
       });
-  }, [boardId, navigate, principalData]);
+  }, [boardId, navigate, principal ]);
 
   const updateBoardMutation = useMutation({
     mutationKey: "updateBoard",

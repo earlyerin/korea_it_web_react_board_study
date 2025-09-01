@@ -28,6 +28,15 @@ export const getBoardListRequest = async () => {
   }
 };
 
+export const getBoardByUserId = async (userId) => {
+  try {
+    const response = await instance.get(`/board/profile/${userId}`);
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
 export const getBoardDetail = async (boardId) => {
   try {
     const response = await instance.get(`/board/${boardId}`);

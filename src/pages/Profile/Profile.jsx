@@ -1,9 +1,17 @@
 /** @jsxImportSource @emotion/react */
 import * as s from "./styles";
 import { useEffect, useState } from "react";
-import { LuLink2, LuMail, LuShield, LuUserRound } from "react-icons/lu";
+import {
+  LuLink2,
+  LuLockKeyhole,
+  LuMail,
+  LuShield,
+  LuUserRound,
+} from "react-icons/lu";
 import { useNavigate, useParams } from "react-router-dom";
 import { getUserInfo } from "../../apis/account/accountApis";
+import MyBoard from "../../components/MyBoard/MyBoard";
+import ChangePassword from "../../components/ChangePassword/ChangePassword";
 
 function Profile() {
   const [userInfo, setUserInfo] = useState({});
@@ -39,25 +47,31 @@ function Profile() {
             alt="userImg"
           />
           <h3>{userInfo.name}</h3>
-          <p>{userInfo.email}</p>
+          <p>{userInfo?.email}</p>
         </div>
-        <div css={s.updateBox}>
+        <div css={s.contentBox}>
+          <div>내게시물</div>
+          <div>
+            <MyBoard>${userId}</MyBoard>
+          </div>
+        </div>
+        <div css={s.contentBox}>
           <div>내프로필</div>
           <div>
             <p>
               <LuUserRound />
-              {userInfo.name}
+              {userInfo?.name}
             </p>
             <button>수정</button>
           </div>
           <div>
             <p>
               <LuMail />
-              {userInfo.email}
+              {userInfo?.email}
             </p>
             <button>수정</button>
           </div>
-          {userInfo?.roles
+          {userInfo.roles
             ? userInfo.roles.map((userRole) => {
                 console.log(userRole);
                 return (
@@ -82,6 +96,18 @@ function Profile() {
                   }).format(new Date(userInfo.regDt))
                 : undefined}
             </p>
+          </div>
+        </div>
+        <div css={s.contentBox}>
+          <div>보안설정</div>
+          <div>
+            <p>
+              <LuLockKeyhole />
+              비밀번호
+            </p>
+            <button onClick={() => navigate("/account/profile/changePassword")}>
+              수정
+            </button>
           </div>
         </div>
       </div>

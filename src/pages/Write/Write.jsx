@@ -2,15 +2,15 @@
 import { useState } from "react";
 import * as s from "./styles";
 import { addBoardRequest } from "../../apis/board/boardApis";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { usePrincipalState } from "../../store/usePrincipalStore";
 
 function Write() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  const principalData = queryClient.getQueryData(["getPrincipal"]);
+  const { principal, isLoggedIn } = usePrincipalState;
 
   const addBoardMutation = useMutation({
     mutationKey: "addBoard",
@@ -44,7 +44,7 @@ function Write() {
       return;
     }
 
-    if (principalData === undefined) {
+    if (!isLoggedIn) {
       alert("로그인이 필요합니다.");
       navigate("/auth/signin");
       return;
@@ -53,7 +53,7 @@ function Write() {
     addBoardMutation.mutate({
       title: title,
       content: content,
-      userId: principalData.data.data.userId,
+      userId: principal.userId,
     });
   };
 
