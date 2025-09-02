@@ -9,12 +9,15 @@ import {
   LuUserRound,
 } from "react-icons/lu";
 import { useNavigate, useParams } from "react-router-dom";
-import { getUserInfo } from "../../apis/account/accountApis";
+import { getUserInfo, sendMailRequest } from "../../apis/account/accountApis";
 import { getBoardListRequest } from "../../apis/board/boardApis";
+import ChangeUsername from "../../components/ChangeUsername/ChangeUsername";
+import { usePrincipalState } from "../../store/usePrincipalStore";
 
 function Profile() {
   const [userInfo, setUserInfo] = useState({});
   const { userId } = useParams();
+  const { principal } = usePrincipalState();
   const [boardList, setBoardList] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
@@ -65,6 +68,21 @@ function Profile() {
       });
   }, [userId, navigate]);
 
+  const onClickVerifyhandler = () => {
+    sendMailRequest({
+      userEmail: principal.userEmail,
+    }).then((response) => {
+      if (response.data.status === "success") {
+        alert(response.data.message);
+        // window.location.href = `/account/profile/${userId}`;
+      } else if (response.data.status === "failed") {
+        alert(response.data.message);
+      }
+    });
+  };
+
+  const onClickchangeUserNameHandler = () => {};
+
   return (
     <div css={s.container}>
       <div css={s.box}>
@@ -79,7 +97,9 @@ function Profile() {
         <div css={s.contentBox}>
           <div>
             내게시물
-            <span onClick={() => navigate(`/account/profile/myboard/${userId}`)}>
+            <span
+              onClick={() => navigate(`/account/profile/myboard/${userId}`)}
+            >
               모두 보기
             </span>
           </div>
@@ -109,7 +129,7 @@ function Profile() {
               <LuUserRound />
               {userInfo?.name}
             </p>
-            <button>수정</button>
+            <button onClick={onClickchangeUserNameHandler}>수정</button>
           </div>
           <div>
             <p>
@@ -126,7 +146,9 @@ function Profile() {
                       <LuShield />
                       {userRole.role.roleNameKor}
                     </p>
-                    {userRole.roleId === 3 ? <button>인증</button> : null}
+                    {userRole.roleId === 3 ? (
+                      <button onClick={onClickVerifyhandler}>인증</button>
+                    ) : null}
                   </div>
                 );
               })
@@ -157,6 +179,7 @@ function Profile() {
           </div>
         </div>
       </div>
+      {/* <ChangeUsername /> */}
     </div>
   );
 }
