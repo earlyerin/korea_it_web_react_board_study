@@ -14,7 +14,7 @@ function Oauth2Merge() {
   const navigate = useNavigate();
 
   const mergeOnClickHandler = () => {
-    if (username.trim().length === 0 && password.trim().length === 0) {
+    if (username.trim().length === 0 || password.trim().length === 0) {
       alert("모든 항목을 입력해주세요");
       return;
     }

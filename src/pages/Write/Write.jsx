@@ -39,7 +39,7 @@ function Write() {
 
   const addOnClickHandler = (e) => {
     e.preventDefault();
-    if (title.trim().length === 0 && content.trim().length === 0) {
+    if (title.trim().length === 0 || content.trim().length === 0) {
       alert("모든 항목을 입력해주세요");
       return;
     }

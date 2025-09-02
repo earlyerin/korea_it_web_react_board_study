@@ -17,9 +17,9 @@ function Oauth2Signup() {
 
   const signupOnClickHandler = () => {
     if (
-      username.trim().length === 0 &&
-      password.trim().length === 0 &&
-      confirmPassword.trim().length === 0 &&
+      username.trim().length === 0 ||
+      password.trim().length === 0 ||
+      confirmPassword.trim().length === 0 ||
       email.trim().length === 0
     ) {
       alert("모든 항목을 입력해주세요");

@@ -79,6 +79,15 @@ export const contentBox = css`
       margin: 0;
     }
 
+    > span {
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    > strong {
+      cursor: pointer;
+    }
+
     > button {
       padding: 5px 10px;
       border: none;
