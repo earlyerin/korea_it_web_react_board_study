@@ -30,21 +30,46 @@ export const profileBox = css`
   padding-bottom: 20px;
   box-sizing: border-box;
 
-  > img {
-    border-radius: 50%;
-    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-  }
+  > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    position: relative;
 
-  > h3 {
-    margin: 0;
-  }
+    > img {
+      border-radius: 50%;
+      box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+    }
 
-  > p {
-    margin: 0;
-    color: #777777ff;
+    > span {
+      position: absolute;
+      display: block;
+      text-align: center;
+      width: 30px;
+      height: 30px;
+      padding: 5px;
+      bottom: 0;
+      right: 10px;
+      font-size: 16px;
+      font-weight: 500;
+      color: #fff;
+      background-color: #5a5a5aff;
+      border-radius: 50%;
+      box-sizing: border-box;
+    }
+
+    > h3 {
+      margin: 0;
+    }
+
+    > p {
+      margin: 0;
+      color: #777777ff;
+    }
   }
 `;
 

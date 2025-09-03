@@ -33,6 +33,18 @@ export const changeUserNameRequest = async (data) => {
   }
 };
 
+export const changeProfileImgRequest = async (data) => {
+  try {
+    const response = await instance.post(
+      "/account/change/profileImg",
+      data
+    );
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
 export const sendMailRequest = async (data) => {
   try {
     const response = await instance.post("/mail/send", data);
