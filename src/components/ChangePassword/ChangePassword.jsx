@@ -60,6 +60,7 @@ function ChangePassword() {
     }
     setErrorMessage(newErrorMessage);
   }, [newPassword]);
+
   return (
     <div css={s.container}>
       <div css={s.box}>

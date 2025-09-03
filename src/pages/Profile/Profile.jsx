@@ -2,7 +2,7 @@
 import * as s from "./styles";
 import { useEffect, useState } from "react";
 import {
-  LuLink2,
+  LuCalendarArrowDown,
   LuLockKeyhole,
   LuMail,
   LuShield,
@@ -11,7 +11,6 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { getUserInfo, sendMailRequest } from "../../apis/account/accountApis";
 import { getBoardListRequest } from "../../apis/board/boardApis";
-import ChangeUsername from "../../components/ChangeUsername/ChangeUsername";
 import { usePrincipalState } from "../../store/usePrincipalStore";
 
 function Profile() {
@@ -74,14 +73,11 @@ function Profile() {
     }).then((response) => {
       if (response.data.status === "success") {
         alert(response.data.message);
-        // window.location.href = `/account/profile/${userId}`;
       } else if (response.data.status === "failed") {
         alert(response.data.message);
       }
     });
   };
-
-  const onClickchangeUserNameHandler = () => {};
 
   return (
     <div css={s.container}>
@@ -129,14 +125,15 @@ function Profile() {
               <LuUserRound />
               {userInfo?.name}
             </p>
-            <button onClick={onClickchangeUserNameHandler}>수정</button>
+            <button onClick={() => navigate("/account/profile/changeUsername")}>
+              수정
+            </button>
           </div>
           <div>
             <p>
               <LuMail />
               {userInfo?.email}
             </p>
-            <button>수정</button>
           </div>
           {userInfo.roles
             ? userInfo.roles.map((userRole) => {
@@ -155,7 +152,7 @@ function Profile() {
             : ""}
           <div>
             <p>
-              <LuLink2 />
+              <LuCalendarArrowDown />
               {userInfo?.regDt
                 ? new Intl.DateTimeFormat("ko-KR", {
                     year: "numeric",
@@ -179,7 +176,6 @@ function Profile() {
           </div>
         </div>
       </div>
-      {/* <ChangeUsername /> */}
     </div>
   );
 }

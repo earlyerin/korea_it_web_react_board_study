@@ -1,21 +1,22 @@
 import { css } from "@emotion/react";
 
 export const container = css`
-  position: fixed;
-  width: 500px;
-  height: 500px;
-  top: 100px;
-  margin: 0 auto;
-  left: 0;
-  right: 0;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
 `;
 
 export const box = css`
+  width: 400px;
+  height: auto;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
   gap: 10px;
 `;
 
